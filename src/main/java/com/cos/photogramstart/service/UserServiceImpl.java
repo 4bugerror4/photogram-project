@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cos.photogramstart.domain.user.User;
+import com.cos.photogramstart.handler.ex.CustomException;
 import com.cos.photogramstart.handler.ex.CustomValidationApiException;
 import com.cos.photogramstart.repository.UserRepository;
+import com.cos.photogramstart.web.dto.user.UserProfileDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +35,23 @@ public class UserServiceImpl implements UserService {
 		userEntity.setGender(user.getGender());
 		
 		return userEntity;
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public UserProfileDto userProfile(int pageUserId, int principalId) {
+		
+		UserProfileDto dto = new UserProfileDto();
+		
+		User userEntity = userRepository.findById(pageUserId).orElseThrow(() -> {
+			throw new CustomException("해당 프로필 페이지는 없는 페이지 입니다.");
+		});
+		
+		dto.setUser(userEntity);
+		dto.setPageOwnerStatus(pageUserId == principalId); // true 로그인 한 페이지, false 로그인 안한 페이지
+		dto.setImageCount(userEntity.getImages().size());
+		
+		return dto;
 	}
 
 }

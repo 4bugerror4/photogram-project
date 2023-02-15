@@ -31,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
 		
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public User findByUsername(String username) {
 

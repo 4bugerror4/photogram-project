@@ -73,7 +73,7 @@
 				<div class="content-item__09">
 					<div class="item__title">전회번호</div>
 					<div class="item__input">
-						<input type="text" name="tel" placeholder="전화번호"
+						<input type="text" name="phone" placeholder="전화번호"
 							value="${principal.user.phone}" />
 					</div>
 				</div>

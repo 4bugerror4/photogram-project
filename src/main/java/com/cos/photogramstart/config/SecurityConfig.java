@@ -24,7 +24,7 @@ public class SecurityConfig {
 		http
 			.csrf().disable()
 			.authorizeRequests()
-			.antMatchers("/", "/user/**", "/image/**", "/subscribe/**", "/commonet/**").authenticated()
+			.antMatchers("/", "/user/**", "/image/**", "/subscribe/**", "/commonet/**", "/api/**").authenticated()
 			.anyRequest().permitAll()
 			.and()
 			.formLogin()
