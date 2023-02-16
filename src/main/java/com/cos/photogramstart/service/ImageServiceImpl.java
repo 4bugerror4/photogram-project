@@ -3,9 +3,12 @@ package com.cos.photogramstart.service;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +48,33 @@ public class ImageServiceImpl implements ImageService {
 		Image image = dto.toEntity(imageFileName, principal.getUser());
 		imageRepository.save(image);
 		
+	}
+
+	@Transactional(readOnly = true)
+	@Override
+	public Page<Image> imageStory(int principalId, Pageable pageable) {
+
+		Page<Image> images = imageRepository.mStory(principalId, pageable);
+		
+		// images에 좋아요 상태 담기
+		images.forEach((image) -> {
+			
+			image.setLikeCount(image.getLikes().size());
+			
+			image.getLikes().forEach((like) -> {
+				if (like.getUser().getId() == principalId) {
+					image.setLikeState(true);
+				}
+			});
+		});
+		
+		return images;
+	}
+
+	@Override
+	public List<Image> imagePapular() {
+
+		return imageRepository.mPopular();
 	}
 
 }

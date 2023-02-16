@@ -15,8 +15,10 @@ import lombok.Setter;
 @Builder
 public class UserProfileDto {
 	
-	private boolean pageOwnerStatus; // 페이지 주인
+	private boolean pageOwnerState; // 페이지 주인
 	private User user;
 	private int imageCount;
+	private boolean subscribeState; // 구독 상태
+	private int subscribeCount; // 구독한 유저의 수
 
 }
